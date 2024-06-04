@@ -112,13 +112,13 @@ class UniversalMeshEmitter implements VertexConsumer {
 	}
 
 	@Override
-	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float red, float green, float blue, int light, int overlay) {
-		currentDelegate.putBulkData(pose, quad, red, green, blue, light, overlay);
+	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float red, float green, float blue, float alpha, int light, int overlay) {
+		currentDelegate.putBulkData(pose, quad, red, green, blue, alpha, light, overlay);
 	}
 
 	@Override
-	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float[] brightnesses, float red, float green, float blue, int[] lights, int overlay, boolean readExistingColor) {
-		currentDelegate.putBulkData(pose, quad, brightnesses, red, green, blue, lights, overlay, readExistingColor);
+	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float[] brightnesses, float red, float green, float blue, float alpha, int[] lights, int overlay, boolean readExistingColor) {
+		currentDelegate.putBulkData(pose, quad, brightnesses, red, green, blue, alpha, lights, overlay, readExistingColor);
 	}
 
 	private class WrapperModel extends ForwardingBakedModel {

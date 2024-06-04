@@ -27,13 +27,14 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 @Mod(Flywheel.ID)
@@ -67,10 +68,10 @@ public final class FlywheelForge {
 	private static void registerImplEventListeners(IEventBus forgeEventBus, IEventBus modEventBus) {
 		forgeEventBus.addListener((ReloadLevelRendererEvent e) -> BackendManagerImpl.onReloadLevelRenderer(e.level()));
 
-		forgeEventBus.addListener((TickEvent.LevelTickEvent e) -> {
+		forgeEventBus.addListener((LevelTickEvent e) -> {
 			// Make sure we don't tick on the server somehow.
-			if (e.phase == TickEvent.Phase.END && e.side == LogicalSide.CLIENT) {
-				VisualizationEventHandler.onClientTick(Minecraft.getInstance(), e.level);
+			if (FMLEnvironment.dist == Dist.CLIENT) {
+				VisualizationEventHandler.onClientTick(Minecraft.getInstance(), e.getLevel());
 			}
 		});
 		forgeEventBus.addListener((BeginFrameEvent e) -> VisualizationEventHandler.onBeginFrame(e.context()));

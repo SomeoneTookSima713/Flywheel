@@ -34,11 +34,11 @@ abstract class MinecraftMixin {
 
 	@Inject(method = "lambda$new$7", at = @At("HEAD"))
 	private void flywheel$onEndInitialResourceReload(@Coerce Object gameLoadCookie, Optional<Throwable> error, CallbackInfo ci) {
-		ModLoader.get().postEvent(new EndClientResourceReloadEvent((Minecraft) (Object) this, resourceManager, true, error));
+		ModLoader.postEvent(new EndClientResourceReloadEvent((Minecraft) (Object) this, resourceManager, true, error));
 	}
 
 	@Inject(method = "lambda$reloadResourcePacks$39", at = @At("HEAD"))
 	private void flywheel$onEndManualResourceReload(boolean recovery, @Coerce Object gameLoadCookie, CompletableFuture<Void> completablefuture, Optional<Throwable> error, CallbackInfo ci) {
-		ModLoader.get().postEvent(new EndClientResourceReloadEvent((Minecraft) (Object) this, resourceManager, false, error));
+		ModLoader.postEvent(new EndClientResourceReloadEvent((Minecraft) (Object) this, resourceManager, false, error));
 	}
 }
