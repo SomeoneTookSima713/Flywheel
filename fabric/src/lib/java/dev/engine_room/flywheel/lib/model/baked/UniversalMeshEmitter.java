@@ -56,59 +56,45 @@ class UniversalMeshEmitter implements VertexConsumer {
 	}
 
 	@Override
-	public VertexConsumer vertex(double x, double y, double z) {
-		currentDelegate.vertex(x, y, z);
+	public VertexConsumer addVertex(float x, float y, float z) {
+		currentDelegate.addVertex(x, y, z);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer color(int red, int green, int blue, int alpha) {
-		currentDelegate.color(red, green, blue, alpha);
+	public VertexConsumer setColor(int red, int green, int blue, int alpha) {
+		currentDelegate.setColor(red, green, blue, alpha);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer uv(float u, float v) {
-		currentDelegate.uv(u, v);
+	public VertexConsumer setUv(float u, float v) {
+		currentDelegate.setUv(u, v);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer overlayCoords(int u, int v) {
-		currentDelegate.overlayCoords(u, v);
+	public VertexConsumer setUv1(int u, int v) {
+		currentDelegate.setUv1(u, v);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer uv2(int u, int v) {
-		currentDelegate.uv2(u, v);
+	public VertexConsumer setUv2(int u, int v) {
+		currentDelegate.setUv2(u, v);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer normal(float x, float y, float z) {
-		currentDelegate.normal(x, y, z);
+	public VertexConsumer setNormal(float x, float y, float z) {
+		currentDelegate.setNormal(x, y, z);
 		return this;
 	}
 
+	// todo - parameter mappings
 	@Override
-	public void endVertex() {
-		currentDelegate.endVertex();
-	}
-
-	@Override
-	public void defaultColor(int red, int green, int blue, int alpha) {
-		currentDelegate.defaultColor(red, green, blue, alpha);
-	}
-
-	@Override
-	public void unsetDefaultColor() {
-		currentDelegate.unsetDefaultColor();
-	}
-
-	@Override
-	public void vertex(float x, float y, float z, float red, float green, float blue, float alpha, float u, float v, int overlay, int light, float normalX, float normalY, float normalZ) {
-		currentDelegate.vertex(x, y, z, red, green, blue, alpha, u, v, overlay, light, normalX, normalY, normalZ);
+	public void addVertex(float f, float g, float h, int i, float j, float k, int l, int m, float n, float o, float p) {
+		currentDelegate.addVertex(f, g, h, i, j, k, l, m, n, o, p);
 	}
 
 	@Override
