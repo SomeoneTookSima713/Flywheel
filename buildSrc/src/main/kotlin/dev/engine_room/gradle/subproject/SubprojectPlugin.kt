@@ -106,7 +106,8 @@ class SubprojectPlugin: Plugin<Project> {
 
             add("mappings", loom.layered {
                 officialMojangMappings()
-                parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+                //fixme parchment isn't ready
+                //parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
             })
 
             add("api", "com.google.code.findbugs:jsr305:3.0.2")

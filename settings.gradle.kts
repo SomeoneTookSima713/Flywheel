@@ -22,4 +22,5 @@ rootProject.name = "Flywheel"
 
 include("common")
 include("fabric")
-include("forge")
+//fixme
+//include("forge")
