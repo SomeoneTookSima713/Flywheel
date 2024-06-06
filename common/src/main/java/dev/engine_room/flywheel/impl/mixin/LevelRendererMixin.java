@@ -2,6 +2,8 @@ package dev.engine_room.flywheel.impl.mixin;
 
 import java.util.SortedSet;
 
+import net.minecraft.client.DeltaTracker;
+
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.objectweb.asm.Opcodes;
@@ -50,8 +52,9 @@ abstract class LevelRendererMixin {
 
 	//	@Inject(method = "renderLevel", at = @At("HEAD"))
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/level/lighting/LevelLightEngine;runLightUpdates()I"))
-	private void flywheel$beginRender(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, Matrix4f frustrumMatrix, CallbackInfo ci) {
-		flywheel$renderContext = RenderContextImpl.create((LevelRenderer) (Object) this, level, renderBuffers, new PoseStack(), projectionMatrix, camera, partialTick);
+	private void flywheel$beginRender(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, Matrix4f frustrumMatrix, CallbackInfo ci) {
+		// fixme - is the delta stuff correct? no idea!
+		flywheel$renderContext = RenderContextImpl.create((LevelRenderer) (Object) this, level, renderBuffers, new PoseStack(), projectionMatrix, camera, deltaTracker.getGameTimeDeltaTicks());
 
 		FlwImplXplat.INSTANCE.dispatchBeginFrameEvent(flywheel$renderContext);
 	}
@@ -102,17 +105,18 @@ abstract class LevelRendererMixin {
 		flywheel$dispatch(RenderStage.AFTER_TRANSLUCENT_TERRAIN);
 	}
 
-	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;renderSectionLayer(Lnet/minecraft/client/renderer/RenderType;Lcom/mojang/blaze3d/vertex/PoseStack;DDDLorg/joml/Matrix4f;)V", ordinal = 6, shift = Shift.AFTER))
+	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;renderSectionLayer(Lnet/minecraft/client/renderer/RenderType;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V", ordinal = 6, shift = Shift.AFTER))
 	private void flywheel$onStage$afterTranslucentTerrain(CallbackInfo ci) {
 		flywheel$dispatch(RenderStage.AFTER_TRANSLUCENT_TERRAIN);
 	}
 
 	@Group(name = "onStage$afterParticles", min = 2, max = 2)
-	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V", shift = Shift.AFTER))
+	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V", shift = Shift.AFTER))
 	private void flywheel$onStage$afterParticles$fabric(CallbackInfo ci) {
 		flywheel$dispatch(RenderStage.AFTER_PARTICLES);
 	}
 
+	//fixme no neofrog 1.21 yet
 	@Group(name = "onStage$afterParticles")
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;)V", shift = Shift.AFTER))
 	private void flywheel$onStage$afterParticles$forge(CallbackInfo ci) {
