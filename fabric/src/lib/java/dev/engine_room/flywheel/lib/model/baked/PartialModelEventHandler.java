@@ -2,6 +2,8 @@ package dev.engine_room.flywheel.lib.model.baked;
 
 import java.util.List;
 
+import net.minecraft.client.resources.model.ModelResourceLocation;
+
 import org.jetbrains.annotations.ApiStatus;
 
 import dev.engine_room.flywheel.api.Flywheel;
@@ -24,7 +26,7 @@ public final class PartialModelEventHandler {
 
 	public static void onBakingCompleted(ModelManager manager) {
 		for (PartialModel partial : PartialModel.ALL) {
-			partial.set(manager.getModel(partial.getLocation()));
+			partial.set(manager.getModel(ModelResourceLocation.inventory(partial.getLocation())));
 		}
 	}
 

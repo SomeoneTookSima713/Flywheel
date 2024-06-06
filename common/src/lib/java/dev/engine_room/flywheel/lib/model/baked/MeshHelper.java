@@ -2,6 +2,8 @@ package dev.engine_room.flywheel.lib.model.baked;
 
 import java.nio.ByteBuffer;
 
+import com.mojang.blaze3d.vertex.MeshData;
+
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.MemoryUtil;
 
@@ -16,8 +18,8 @@ final class MeshHelper {
 	private MeshHelper() {
 	}
 
-	public static SimpleMesh blockVerticesToMesh(BufferBuilder.RenderedBuffer buffer, @Nullable String meshDescriptor) {
-		BufferBuilder.DrawState drawState = buffer.drawState();
+	public static SimpleMesh blockVerticesToMesh(MeshData buffer, @Nullable String meshDescriptor) {
+		MeshData.DrawState drawState = buffer.drawState();
 		int vertexCount = drawState.vertexCount();
 		long srcStride = drawState.format().getVertexSize();
 

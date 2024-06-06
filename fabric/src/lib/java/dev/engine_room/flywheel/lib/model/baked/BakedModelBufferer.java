@@ -2,9 +2,10 @@ package dev.engine_room.flywheel.lib.model.baked;
 
 import java.util.Iterator;
 
+import com.mojang.blaze3d.vertex.MeshData;
+
 import org.jetbrains.annotations.Nullable;
 
-import com.mojang.blaze3d.vertex.BufferBuilder.RenderedBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
@@ -129,7 +130,7 @@ final class BakedModelBufferer {
 	}
 
 	public interface ResultConsumer {
-		void accept(RenderType renderType, boolean shaded, RenderedBuffer data);
+		void accept(RenderType renderType, boolean shaded, MeshData data);
 	}
 
 	private static class ThreadLocalObjects {
