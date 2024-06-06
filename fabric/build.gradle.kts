@@ -60,9 +60,17 @@ defaultPackageInfos {
     sources(api, lib, backend, main)
 }
 
+// fixme temp
+repositories {
+    maven("https://maven.ithundxr.dev/hidden")
+}
+
 dependencies {
     modImplementation("net.fabricmc:fabric-loader:${property("fabric_loader_version")}")
     modApi("net.fabricmc.fabric-api:fabric-api:${property("fabric_api_version")}")
+
+    // fixme temp
+    modImplementation("net.fabricmc.fabric-api:fabric-model-loading-api-v1:1.0.14+local+3af655b33f") { isTransitive = false }
 
     modCompileOnly("maven.modrinth:sodium:${property("sodium_version")}")
     modCompileOnly("maven.modrinth:iris:${property("iris_version")}")
