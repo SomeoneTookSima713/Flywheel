@@ -2,6 +2,10 @@ package dev.engine_room.flywheel.impl.mixin;
 
 import java.util.SortedSet;
 
+import com.llamalad7.mixinextras.sugar.Share;
+
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+
 import net.minecraft.client.DeltaTracker;
 
 import org.jetbrains.annotations.Nullable;
@@ -15,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Group;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -52,11 +57,19 @@ abstract class LevelRendererMixin {
 
 	//	@Inject(method = "renderLevel", at = @At("HEAD"))
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/level/lighting/LevelLightEngine;runLightUpdates()I"))
-	private void flywheel$beginRender(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, Matrix4f frustrumMatrix, CallbackInfo ci) {
+	private void flywheel$beginRender(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, Matrix4f frustrumMatrix, CallbackInfo ci, @Share("poseStack") LocalRef<PoseStack> sharedPose) {
+		PoseStack pose = new PoseStack();
 		// fixme - is the delta stuff correct? no idea!
-		flywheel$renderContext = RenderContextImpl.create((LevelRenderer) (Object) this, level, renderBuffers, new PoseStack(), projectionMatrix, camera, deltaTracker.getGameTimeDeltaTicks());
+		flywheel$renderContext = RenderContextImpl.create((LevelRenderer) (Object) this, level, renderBuffers, pose, projectionMatrix, camera, deltaTracker.getGameTimeDeltaTicks());
 
 		FlwImplXplat.INSTANCE.dispatchBeginFrameEvent(flywheel$renderContext);
+
+		sharedPose.set(pose);
+	}
+
+	@Redirect(method = "renderLevel", at = @At(value = "NEW", target = "com/mojang/blaze3d/vertex/PoseStack"))
+	private PoseStack flywheel$fixPoseStack(@Share("poseStack") LocalRef<PoseStack> sharedPose) {
+		return sharedPose.get();
 	}
 
 	@Inject(method = "renderLevel", at = @At("RETURN"))

@@ -93,25 +93,6 @@ class VertexWriter implements VertexConsumer {
 		return this;
 	}
 
-	public VertexConsumer endVertex() {
-		if (!filledPosition || !filledTexture || !filledNormal) {
-			throw new IllegalStateException("Not filled all elements of the vertex");
-		}
-
-		filledPosition = false;
-		filledTexture = false;
-		filledNormal = false;
-		vertexCount++;
-
-		long byteSize = (vertexCount + 1) * STRIDE;
-		long capacity = data.size();
-		if (byteSize > capacity) {
-			data = data.realloc(capacity * 2);
-		}
-
-		return this;
-	}
-
 	private long vertexPtr() {
 		return data.ptr() + vertexCount * STRIDE;
 	}
