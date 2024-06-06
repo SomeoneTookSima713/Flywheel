@@ -18,7 +18,7 @@
     "visualmanage.BlockEntityMixin",
     "visualmanage.LevelChunkMixin",
     "visualmanage.LevelRendererMixin",
-    "visualmanage.RebuildTaskMixin"
+    "visualmanage.SectionCompilerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

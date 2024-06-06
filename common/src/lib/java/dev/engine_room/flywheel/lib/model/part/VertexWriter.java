@@ -42,13 +42,13 @@ class VertexWriter implements VertexConsumer {
 			MemoryUtil.memPutFloat(ptr + 8, z);
 			filledPosition = true;
 		}
-		return this.endVertex();
+		return this;
 	}
 
 	@Override
 	public VertexConsumer setColor(int red, int green, int blue, int alpha) {
 		// ignore color
-		return this.endVertex();
+		return this;
 	}
 
 	@Override
@@ -66,19 +66,19 @@ class VertexWriter implements VertexConsumer {
 			MemoryUtil.memPutFloat(ptr + 16, v);
 			filledTexture = true;
 		}
-		return this.endVertex();
+		return this;
 	}
 
 	@Override
 	public VertexConsumer setUv1(int u, int v) {
 		// ignore overlay
-		return this.endVertex();
+		return this;
 	}
 
 	@Override
 	public VertexConsumer setUv2(int u, int v) {
 		// ignore light
-		return this.endVertex();
+		return this;
 	}
 
 	@Override
@@ -90,7 +90,7 @@ class VertexWriter implements VertexConsumer {
 			MemoryUtil.memPutByte(ptr + 22, RenderMath.nb(z));
 			filledNormal = true;
 		}
-		return this.endVertex();
+		return this;
 	}
 
 	public VertexConsumer endVertex() {

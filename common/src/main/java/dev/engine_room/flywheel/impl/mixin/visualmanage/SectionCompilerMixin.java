@@ -1,5 +1,7 @@
 package dev.engine_room.flywheel.impl.mixin.visualmanage;
 
+import net.minecraft.client.renderer.chunk.SectionCompiler;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
@@ -9,10 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import dev.engine_room.flywheel.lib.visual.VisualizationHelper;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-@Mixin(targets = "net.minecraft.client.renderer.chunk.SectionRenderDispatcher$RenderSection$RebuildTask")
-abstract class RebuildTaskMixin {
-	@Inject(method = "handleBlockEntity(Lnet/minecraft/client/renderer/chunk/SectionRenderDispatcher$RenderSection$RebuildTask$CompileResults;Lnet/minecraft/world/level/block/entity/BlockEntity;)V", at = @At("HEAD"), cancellable = true)
-	private void flywheel$tryAddBlockEntity(@Coerce Object compileResults, BlockEntity blockEntity, CallbackInfo ci) {
+@Mixin(SectionCompiler.class)
+abstract class SectionCompilerMixin {
+	@Inject(method = "handleBlockEntity", at = @At("HEAD"), cancellable = true)
+	private void flywheel$tryAddBlockEntity(SectionCompiler.Results results, BlockEntity blockEntity, CallbackInfo ci) {
 		if (VisualizationHelper.tryAddBlockEntity(blockEntity)) {
 			ci.cancel();
 		}
