@@ -6,6 +6,7 @@ import org.joml.Matrix4f;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderBuffers;
@@ -26,5 +27,5 @@ public interface RenderContext {
 
 	Camera camera();
 
-	float partialTick();
+	DeltaTracker deltaTracker();
 }

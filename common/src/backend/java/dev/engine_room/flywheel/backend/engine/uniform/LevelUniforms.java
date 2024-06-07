@@ -17,7 +17,8 @@ public final class LevelUniforms extends UniformWriter {
 		long ptr = BUFFER.ptr();
 
 		ClientLevel level = context.level();
-		float partialTick = context.partialTick();
+		//fixme checkover partialTick
+		float partialTick = context.deltaTracker().getGameTimeDeltaPartialTick(true);
 
 		Vec3 skyColor = level.getSkyColor(context.camera().getPosition(), partialTick);
 		Vec3 cloudColor = level.getCloudColor(partialTick);
