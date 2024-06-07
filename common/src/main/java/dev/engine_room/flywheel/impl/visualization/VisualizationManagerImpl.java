@@ -93,9 +93,10 @@ public class VisualizationManagerImpl implements VisualizationManager {
 		tickPlan = NestedPlan.of(blockEntities.tickPlan(), entities.tickPlan(), effects.tickPlan())
 				.then(RaisePlan.raise(tickFlag));
 
-		var recreate = SimplePlan.<RenderContext>of(context -> blockEntitiesStorage.recreateAll(context.partialTick()),
-				context -> entitiesStorage.recreateAll(context.partialTick()),
-				context -> effectsStorage.recreateAll(context.partialTick()));
+		//fixme checkover partialTick
+		var recreate = SimplePlan.<RenderContext>of(context -> blockEntitiesStorage.recreateAll(context.deltaTracker().getGameTimeDeltaPartialTick(true)),
+				context -> entitiesStorage.recreateAll(context.deltaTracker().getGameTimeDeltaPartialTick(true)),
+				context -> effectsStorage.recreateAll(context.deltaTracker().getGameTimeDeltaPartialTick(true)));
 
 		var update = MapContextPlan.map(this::createVisualFrameContext)
 				.to(NestedPlan.of(blockEntities.framePlan(), entities.framePlan(), effects.framePlan()));
@@ -128,7 +129,8 @@ public class VisualizationManagerImpl implements VisualizationManager {
 		viewProjection.translate((float) (renderOrigin.getX() - cameraPos.x), (float) (renderOrigin.getY() - cameraPos.y), (float) (renderOrigin.getZ() - cameraPos.z));
 		FrustumIntersection frustum = new FrustumIntersection(viewProjection);
 
-		return new DynamicVisualContextImpl(ctx.camera(), frustum, ctx.partialTick(), frameLimiter);
+		//fixme checkover partialTick
+		return new DynamicVisualContextImpl(ctx.camera(), frustum, ctx.deltaTracker().getGameTimeDeltaPartialTick(true), frameLimiter);
 	}
 
 	protected DistanceUpdateLimiterImpl createUpdateLimiter() {

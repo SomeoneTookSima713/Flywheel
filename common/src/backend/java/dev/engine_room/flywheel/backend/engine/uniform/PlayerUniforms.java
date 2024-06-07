@@ -37,7 +37,8 @@ public final class PlayerUniforms extends UniformWriter {
 
 		PlayerInfo info = ((AbstractClientPlayerAccessor) player).flywheel$getPlayerInfo();
 
-		Vec3 eyePos = player.getEyePosition(context.partialTick());
+		//fixme checkover partialTick
+		Vec3 eyePos = player.getEyePosition(context.deltaTracker().getGameTimeDeltaPartialTick(true));
 		ptr = writeVec3(ptr, (float) eyePos.x, (float) eyePos.y, (float) eyePos.z);
 
 		ptr = writeTeamColor(ptr, info.getTeam());
