@@ -42,7 +42,8 @@ class VertexWriter implements VertexConsumer {
 			MemoryUtil.memPutFloat(ptr + 8, z);
 			filledPosition = true;
 		}
-		return this;
+
+		return this.endVertex();
 	}
 
 	@Override
@@ -90,6 +91,25 @@ class VertexWriter implements VertexConsumer {
 			MemoryUtil.memPutByte(ptr + 22, RenderMath.nb(z));
 			filledNormal = true;
 		}
+		return this;
+	}
+
+	public VertexConsumer endVertex() {
+		if ((!filledPosition || !filledTexture || !filledNormal) && vertexCount != 0) {
+			throw new IllegalStateException("Not filled all elements of the vertex");
+		}
+
+		filledPosition = false;
+		filledTexture = false;
+		filledNormal = false;
+		vertexCount++;
+
+		long byteSize = (vertexCount + 1) * STRIDE;
+		long capacity = data.size();
+		if (byteSize > capacity) {
+			data = data.realloc(capacity * 2);
+		}
+
 		return this;
 	}
 
